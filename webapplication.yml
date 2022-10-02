@@ -1,0 +1,28 @@
+---
+ - name : webapplication instalation
+   hosts : webapp
+   become : yes
+   tasks :
+     - name : Intall the Java
+       yum :
+         name : java-1.8.0-openjdk-devel
+         state : latest
+ 
+     - name : Install wget
+       yum :
+         name : wget
+         state : latest
+ 
+     - name : Remove Old Data
+       shell : "sudo rm -rf /home/azureuser/*"
+ 
+     - name : Download the tomcat package
+       get_url :
+         url : https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.82/bin/apache-tomcat-8.5.82.tar.gz
+         dest : /home/azureuser/
+ 
+     - name : Extract the tar file
+       shell : "tar -xvf apache-tomcat-8.5.82.tar.gz"
+ 
+     - name : Start the tomcat service
+       shell : "sudo  sh apache-tomcat-8.5.82/bin/startup.sh"
